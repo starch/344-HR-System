@@ -34,7 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -46,4 +46,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  'get /login': 'AuthController.login',
+  'get /logout': 'AuthController.logout',
+
+  'get /auth/google': 'AuthController.authenticate',
+  'get /auth/google/callback': 'AuthController.authcallback',
 };
