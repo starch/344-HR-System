@@ -4,10 +4,10 @@
   <% }) %>
 <% } %>
 
-<% if (Object.keys(providers).length) {%>
-  <h4>Sign in with: </h4>
+<div class="container">
 
-  <% Object.keys(providers).forEach(function (key) { %>
-    <a href="/auth/<%= providers[key].slug %>" role="button"><%= providers[key].name %></a>
-  <% }) %>
-<% } %>
+    <div class="jumbotron text-center">
+      <h1><span class="fa fa-lock"></span> Login</h1>
+      <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
+    </div>
+</div>

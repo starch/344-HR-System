@@ -63,127 +63,117 @@ passport.protocols = require('./protocols');
  * @param {Function} next
  */
 passport.connect = function (req, query, profile, next) {
-  var user = {}
-    , provider;
+  var user = {};
 
-  // Get the authentication provider from the query.
-  query.provider = req.param('provider');
+    // Use profile.provider or fallback to the query.provider if it is undefined
+    // as is the case for OpenID, for example
+    var provider = profile.provider || req.param('provider');
 
-  // Use profile.provider or fallback to the query.provider if it is undefined
-  // as is the case for OpenID, for example
-  provider = profile.provider || query.provider;
+    req.session.tokens = query.tokens;
 
-  // If the provider cannot be identified we cannot match it to a passport so
-  // throw an error and let whoever's next in line take care of it.
-  if (!provider){
-    return next(new Error('No authentication provider was identified.'));
-  }
+    // Get the authentication provider from the query.
+    query.provider = provider;
 
-  // If the profile object contains a list of emails, grab the first one and
-  // add it to the user.
-  // if (profile.hasOwnProperty('emails')) {
-  //   user.email = profile.emails[0].value;
-  // }
-  // // If the profile object contains a username, add it to the user.
-  // if (profile.hasOwnProperty('username')) {
-  //   user.username = profile.username;
-  // }
-
-  // If the username property was empty and the profile object
-  // contains a property "displayName", add it to the user.
-  if (!user.userId && profile.hasOwnProperty('id')) {
-    user.userId = profile.id;
-    // Fill in other user data here.
-  }
-
-  // If neither an email or a username was available in the profile, we don't
-  // have a way of identifying the user in the future. Throw an error and let
-  // whoever's next in the line take care of it.
-  if (!user.userId && !user.email) {
-    return next(new Error('Neither a ID nor email was available'));
-  }
-
-  Passport.findOne({
-    provider   : provider
-  , identifier : query.identifier.toString()
-  }, function (err, passport) {
-    if (err) {
-      return next(err);
+    // If the provider cannot be identified we cannot match it to a passport so
+    // throw an error and let whoever's next in line take care of it.
+    if (!provider) {
+      return next(new Error('No authentication provider was identified.'));
     }
 
-    if (!req.user) {
-      // Scenario: A new user is attempting to sign up using a third-party
-      //           authentication provider.
-      // Action:   Create a new user and assign them a passport.
-      if (!passport) {
-        User.create(user, function (err, user) {
-          if (err) {
-            if (err.code === 'E_VALIDATION') {
-              if (err.invalidAttributes.email) {
-                req.flash('error', 'Error.Passport.Email.Exists');
-              }
-              else {
-                req.flash('error', 'Error.Passport.User.Exists');
-              }
-            }
+    sails.log.debug('auth profile', profile);
 
-            return next(err);
-          }
+    // If the profile object contains a username, add it to the user.
+    if (_.has(profile, 'id')) {
+      user.userId = profile.id;
 
-          query.user = user.id;
-
-          Passport.create(query, function (err, passport) {
-            // If a passport wasn't created, bail out
-            if (err) {
-              return next(err);
-            }
-
-            next(err, user);
-          });
-        });
+      //Fill in other user data here.
+      if (!user.firstName && !user.lastName && profile.hasOwnProperty('name')) {
+        user.firstName = profile.name['givenName'];
+        user.lastName = profile.name['familyName'];
       }
-      // Scenario: An existing user is trying to log in using an already
-      //           connected passport.
-      // Action:   Get the user associated with the passport.
-      else {
-        // If the tokens have changed since the last session, update them
-        if (query.hasOwnProperty('tokens') && query.tokens !== passport.tokens) {
-          passport.tokens = query.tokens;
+
+      if (!user.gender && profile.hasOwnProperty('gender')) {
+        user.gender = profile.gender;
+      }
+
+      if (!user.image && profile.hasOwnProperty('image')) {
+        user.image = profile.image['url'];
+        console.log(user.image);
+      }
+    }
+
+    // If neither an email or a username was available in the profile, we don't
+    // have a way of identifying the user in the future. Throw an error and let
+    // whoever's next in the line take care of it.
+    if (!user.userId && !user.email) {
+      return next(new Error('Neither a username nor email was available'));
+    }
+
+    sails.models.passport.findOne({
+        provider: provider,
+        identifier: query.identifier.toString()
+      })
+      .then(function (passport) {
+        if (!req.user) {
+          // Scenario: A new user is attempting to sign up using a third-party
+          //           authentication provider.
+          // Action:   Create a new user and assign them a passport.
+          if (!passport) {
+            return sails.models.user.create(user)
+              .then(function (_user) {
+                user = _user;
+                return sails.models.passport.create(_.extend({
+                  user: user.id
+                }, query));
+              })
+              .then(function (passport) {
+                next(null, user);
+              })
+              .catch(next);
+
+          }
+          // Scenario: An existing user is trying to log in using an already
+          //           connected passport.
+          // Action:   Get the user associated with the passport.
+          else {
+            // If the tokens have changed since the last session, update them
+            if (_.has(query, 'tokens') && query.tokens != passport.tokens) {
+              passport.tokens = query.tokens;
+            }
+
+            // Save any updates to the Passport before moving on
+            return passport.save()
+              .then(function () {
+
+                // Fetch the user associated with the Passport
+                return sails.models.user.findOne(passport.user);
+              })
+              .then(function (user) {
+                next(null, user);
+              })
+              .catch(next);
+          }
+        } else {
+          // Scenario: A user is currently logged in and trying to connect a new
+          //           passport.
+          // Action:   Create and assign a new passport to the user.
+          if (!passport) {
+            return sails.models.passport.create(_.extend({
+                user: req.user.id
+              }, query))
+              .then(function (passport) {
+                next(null, req.user);
+              })
+              .catch(next);
+          }
+          // Scenario: The user is a nutjob or spammed the back-button.
+          // Action:   Simply pass along the already established session.
+          else {
+            next(null, req.user);
+          }
         }
-
-        // Save any updates to the Passport before moving on
-        passport.save(function (err, passport) {
-          if (err) {
-            return next(err);
-          }
-
-          // Fetch the user associated with the Passport
-          User.findOne(passport.user.id, next);
-        });
-      }
-    } else {
-      // Scenario: A user is currently logged in and trying to connect a new
-      //           passport.
-      // Action:   Create and assign a new passport to the user.
-      if (!passport) {
-        query.user = req.user.id;
-
-        Passport.create(query, function (err, passport) {
-          // If a passport wasn't created, bail out
-          if (err) {
-            return next(err);
-          }
-
-          next(err, req.user);
-        });
-      }
-      // Scenario: The user is a nutjob or spammed the back-button.
-      // Action:   Simply pass along the already established session.
-      else {
-        next(null, req.user);
-      }
-    }
-  });
+      })
+      .catch(next);
 };
 
 /**
@@ -373,12 +363,14 @@ passport.disconnect = function (req, res, next) {
   });
 };
 
-passport.serializeUser(function (user, next) {
-  next(null, user.id);
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
 });
 
-passport.deserializeUser(function (id, next) {
-  User.findOne(id, next);
+passport.deserializeUser(function (id, done) {
+  User.findOne(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 module.exports = passport;

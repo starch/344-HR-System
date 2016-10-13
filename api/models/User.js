@@ -6,8 +6,7 @@ var User = {
     userId     : { type: 'integer',  unique: true, required: true },
     firstName : { type: 'string' },
     lastName  : { type: 'string' },
-    position  : { type: 'string' },
-    salary	  : { type: 'integer' },
+    gender  : { type: 'string' },
     address   : { type: 'string' },
     image     : { type: 'string' },
     passports : { collection: 'Passport', via: 'user' }

@@ -5,6 +5,7 @@
  * should look. It currently includes the minimum amount of functionality for
  * the basics of Passport.js to work.
  */
+var passport = require('passport')
 var AuthController = {
   /**
    * Render the login page
@@ -31,31 +32,21 @@ var AuthController = {
    * @param {Object} res
    */
   login: function (req, res) {
-    var strategies = sails.config.passport
-      , providers  = {};
-
-    // Get a list of available providers for use in your templates.
-    Object.keys(strategies).forEach(function (key) {
-      if (key === 'local') {
-        return;
-      }
-
-      providers[key] = {
-        name: strategies[key].name
-      , slug: key
-      };
-    });
-
     // Render the `auth/login.ext` view
     res.view({
-      providers : providers
-    , errors    : req.flash('error')
+     errors    : req.flash('error')
     });
   },
+  authenticate: function(req,res,next){
+    passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile']})(req,res,next);
+  },
+  authcallback: function(req,res,next){
+    passport.authenticate('google', {failureRedirect: '/login',successRedirect:'/login'})(req,res,next);
+  },
 
-  authenticate: passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile']}),
+  //authenticate: passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile'], passReqToCallback: true}),
   
-  authcallback: passport.authenticate('google', {failureRedirect: 'login',successRedirect:'/profile'}),
+  //authcallback: passport.authenticate('google', {failureRedirect: 'login',successRedirect:'/login'}),
 
   /**
    * Log out a user and return them to the homepage
@@ -71,12 +62,10 @@ var AuthController = {
    * @param {Object} req
    * @param {Object} res
    */
-  logout: function (req, res) {
+  logout: function(req,res){
     req.logout();
-    
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
-    
     res.redirect('/');
   },
 
