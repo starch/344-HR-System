@@ -1,0 +1,38 @@
+<nav class="navbar navbar-inverse navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <% if (req.isAuthenticated()) { %>
+            <a class="navbar-brand" href="/profile">Human Resources</a>
+          <% } else { %>
+            <a class="navbar-brand" href="/">Human Resources</a>
+          <% } %>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <% if (req.isAuthenticated()) { %>
+          <li class="dropdown">
+           <a href="#" id="dLabel" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= req.user.firstName %> <%= req.user.lastName %>
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dLabel">
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Profile</a></li>
+              <li role="presentation" class="divider"></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Logout</a></li>
+            </ul>
+          </li>
+          <% } else { %>
+            <form class="navbar-form navbar-left">
+              <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Sign In</a>
+            </form>
+          <% } %>
+        </ul>
+      </div><!--/.navbar-collapse -->
+  </div>
+</nav>

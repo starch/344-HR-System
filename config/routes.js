@@ -51,4 +51,9 @@ module.exports.routes = {
 
   'get /auth/google': 'AuthController.authenticate',
   'get /auth/google/callback': 'AuthController.authcallback',
+
+  'get /profile': {
+    controller: 'ProfileController',
+    action: 'myProfile'
+  },
 };

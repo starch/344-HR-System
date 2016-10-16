@@ -36,70 +36,26 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">Human Resources</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                  <ul class="nav navbar-nav navbar-right">
-                    <% if (req.isAuthenticated()) { %>
-                    <li class="dropdown">
-                     <a href="#" id="dLabel" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <%= req.user.firstName %> <%= req.user.lastName %>
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dLabel">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Profile</a></li>
-                        <li role="presentation" class="divider"></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Logout</a></li>
-                      </ul>
-                    </li>
-                    <% } else { %>
-                      <form class="navbar-form navbar-left">
-                        <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Sign In</a>
-                      </form>
-                    <% } %>
-                  </ul>
-                </div><!--/.navbar-collapse -->
-            </div>
-        </nav>
     <%- body %>
 
     <hr>
 
     <div class="container">
         <footer>
-        
+        <p>2016 SIS Human Resource Department</p>
         </footer>
-        <div class="row">
-            <div class="col-xs-12 col-md-3">
-                <h4>Human Resource Department</h4>
-                <p class="text-justified">
-                    <small>
-                    </small>
-                </p>
-            </div>
-            <div class="col-md-3 hidden-sm hidden-xs">
+        <!-- <div class="row">
+            <div class="col-md-6 hidden-sm hidden-xs">
                 <h4>Info</h4>
                 <ul class="list-unstyled">
                     <li><span class="glyphicon glyphicon-info-sign"></span> <a href='/about'>About</a></li>
                     <li><span class="glyphicon glyphicon-envelope"></span> <a href='/contact'>Contact</a></li>
                 </ul>
             </div>
-            <div class="col-md-3 hidden-sm hidden-xs">
+            <div class="col-md-6 hidden-sm hidden-xs">
                 <h4>Links</h4>
             </div>
-            <div class="col-md-3 hidden-sm hidden-xs">
-                <h4>Social</h4>
-            </div>
-        </div>
+        </div> -->
     </div>
 
 

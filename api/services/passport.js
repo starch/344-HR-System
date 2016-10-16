@@ -80,8 +80,6 @@ passport.connect = function (req, query, profile, next) {
       return next(new Error('No authentication provider was identified.'));
     }
 
-    sails.log.debug('auth profile', profile);
-
     // If the profile object contains a username, add it to the user.
     if (_.has(profile, 'id')) {
       user.userId = profile.id;
@@ -96,9 +94,8 @@ passport.connect = function (req, query, profile, next) {
         user.gender = profile.gender;
       }
 
-      if (!user.image && profile.hasOwnProperty('image')) {
-        user.image = profile.image['url'];
-        console.log(user.image);
+      if (!user.image && profile.hasOwnProperty('photos')) {
+        user.image = profile._json.image['url'].replace('?sz=50','?sz=250');
       }
     }
 

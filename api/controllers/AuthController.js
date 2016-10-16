@@ -41,7 +41,8 @@ var AuthController = {
     passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile']})(req,res,next);
   },
   authcallback: function(req,res,next){
-    passport.authenticate('google', {failureRedirect: '/login',successRedirect:'/login'})(req,res,next);
+    passport.authenticate('google', {failureRedirect: '/login',successRedirect:'/profile'})(req,res,next);
+    req.session.authenticated = true;
   },
 
   //authenticate: passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile'], passReqToCallback: true}),

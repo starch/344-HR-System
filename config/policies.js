@@ -49,4 +49,9 @@ module.exports.policies = {
 		// before letting any users feed our rabbits
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
+
+  ProfileController: {
+    //'*': false,                  // set as default for IndexController actions
+    index: 'sessionAuth'         // or the name of your custom policy
+  }
 };

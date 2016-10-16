@@ -1,13 +1,25 @@
+<%- partial ('../navbar.ejs') %>
+
 <% if (errors) {%>
   <% errors.forEach(function (error) { %>
     <%= __(error) %>
   <% }) %>
 <% } %>
 
-<div class="container">
-
-    <div class="jumbotron text-center">
-      <h1><span class="fa fa-lock"></span> Login</h1>
-      <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
+<div class="jumbotron">
+	<div class="container">
+  <% if (!user) {%>
+      <h1>Register</h1>
+      <p>Register with your Google Account, this will import the base information for your profile. After signing in you can add additional profile information by navigating to your profile and useing the edit feature.</p>
+      <p>
+      	<a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
+      </p>
+  <% } else { %>
+      <h3>You're already signed in, <%= user.firstName %>!</h3>
+      <p>You can navigate to your profile by clicking on the button below.</p>
+      <p>
+        <a href="/profile" class="btn btn-primary">Profile</a>
+      </p>
+  <% } %>
     </div>
 </div>
