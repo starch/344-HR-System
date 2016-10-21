@@ -7,9 +7,13 @@ var User = {
     firstName : { type: 'string' },
     lastName  : { type: 'string' },
     gender  : { type: 'string' },
-    address   : { type: 'string' },
+    dateOfBirth : { type: 'string', defaultsTo: '01-01-1990' },
+    address   : { type: 'string', defaultsTo: '' },
     image     : { type: 'string' },
-    passports : { collection: 'Passport', via: 'user' }
+    position  : { type: 'string', defaultsTo: 'Adjunct Professor' },
+    salary    : { type: 'integer', defaultsTo: 0 },
+    passports : { collection: 'Passport', via: 'user' },
+    type    : { type: 'string', defaultsTo: 'standard'}
   }
 };
 

@@ -56,4 +56,10 @@ module.exports.routes = {
     controller: 'ProfileController',
     action: 'myProfile'
   },
+  'get /profile/edit': {
+    controller: 'ProfileController',
+    action: 'edit'
+  },
+
+  'post /profile/save': 'ProfileController.save',
 };

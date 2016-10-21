@@ -1,0 +1,68 @@
+<%- partial ('navbar.ejs') %>
+
+<div class="container">
+  <% if (errors) { %>
+  <div class="alert alert-warning" role="alert">
+    <%= errors %>
+  </div>
+<% } %>
+	<div class="row">
+  	<div class="col-sm-6 col-md-4">
+      <a href="#" class="btn btn-default" role="button">Edit</a>
+  		<div class="caption">
+        <h3><%= user.firstName %> <%= user.lastName %></h3>
+      </div>
+			<img src=<%= user.image %> alt="<%= user.firstName %> <%= user.lastName %>'s profile picture" class="img-thumbnail">
+		</div>
+		<div class="col-sm-6 col-md-8">
+		  <h3>Employee Information</h3>
+		  <form action="/profile/save" method="post">
+        <div class="form-group">
+          <label for="txtTitle">Title: </label>
+          <input type="text" class="form-control" id="txtTitle" name="position" value="<%= user.position %>">
+        </div>
+        <div class="form-group">
+          <label for="txtSalary">Salary: </label>
+          <input type="number" class="form-control" id="nmbSalary" name="salary" value="<%= user.salary %>">
+        </div>
+        <div class="form-group">
+          <label for="txtAddress">Address: </label>
+          <% if (user.address) { %>
+            <input type="text" class="form-control" id="txtAddress" name="address" value="<%= user.address %>">
+          <% } else { %>
+            <input type="text" class="form-control" id="txtAddress" name="address">
+          <% } %>
+        </div>
+        <div class="form-group">
+          <label for="">Date of Birth: </label>
+          <% if (user.dateOfBirth) { %>
+            <div class="input-group date">
+              <input type="text" class="form-control" id="datepicker" name="dateOfBirth" value="<%= user.dateOfBirth %>" />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          <% } else { %>
+            <div class="input-group date">
+              <input type="text" class="form-control" id="datepicker" name="dateOfBirth" />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          <% } %>
+        </div>
+        <script>
+          $(document).ready(function () {
+            $('#datepicker').datepicker({
+                format: 'mm-dd-yyyy'
+            });
+          });
+        </script>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" text="Save">
+          <a href="/profile" class="btn btn-danger">Cancel</a>
+        </div>
+      </form>
+		</div>
+	</div>
+</div>
