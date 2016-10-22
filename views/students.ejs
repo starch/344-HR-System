@@ -1,0 +1,28 @@
+<%- partial ('navbar.ejs') %>
+
+<div class="container">
+  <div class="row">    
+    <div class="col-sm-6 col-md-offset-1 col-md-10">
+		  <h3>Students</h3>
+		  <table class="table table-striped">
+  			<thead>
+  				<tr>
+            <th>Student</th>
+            <th>Email</th>
+  					<th>Action</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+        <% for(var i=0; i < responseData.length; i++) { %>
+          <% if (responseData[i].Type == "student") { %>
+    				<tr>
+    					<th scope="row"><%= responseData[i].Firstname %> <%= responseData[i].Lastname %></th>
+              <td><%= responseData[i].Email %></td>
+    					<td><a href="#" class="btn btn-danger">Terminate</a></td>
+    				</tr>
+          <% } %>
+        <% } %>
+  			</tbody>
+		  </table>
+		</div>
+	</div>

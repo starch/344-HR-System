@@ -22,7 +22,13 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dLabel">
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Profile</a></li>
+              <% if (req.user.type == 'admin') { %>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin/students">Students</a></li>
+              <li role="presentation" class="divider"></li>
+               <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin/employees">Employees</a></li>
+               <li role="presentation" class="divider"></li>
+              <% } %>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="/profile">Profile</a></li>
               <li role="presentation" class="divider"></li>
               <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Logout</a></li>
             </ul>

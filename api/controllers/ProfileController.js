@@ -64,25 +64,16 @@ module.exports = {
               user.dateOfBirth = req.body.dateOfBirth;
             }
 
-            //finish updating event
+            //finish updating user
             user.save(function(err,updatedUser){
               if(err){
                 console.log(err);
               } else {
                 req.flash('success', 'Success.User.Update');
-                // if(req.url.indexOf('admin') > -1)
-                //   res.redirect('/admin')
-                // else
                 res.redirect('/profile');
               }
             });
           }
-          // user.dateOfBirth = req.param('dateOfBirth');
-          // user.address = req.param('address');
-          // user.position = req.param('position');
-          // user.salary = req.param('salary');
-
-          //validate the rest of the event
           
         } else {
           console.log(err);

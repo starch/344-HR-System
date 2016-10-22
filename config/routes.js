@@ -61,5 +61,12 @@ module.exports.routes = {
     action: 'edit'
   },
 
+  'get /admin': {
+    controller: 'AdminController',
+    action: 'index'
+  },
+
+  'get /admin/students': 'AdminController.students',
+
   'post /profile/save': 'ProfileController.save',
 };
