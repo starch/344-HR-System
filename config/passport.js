@@ -20,13 +20,9 @@ module.exports.passport = {
     protocol: 'oauth2',
     strategy: require('passport-google-oauth').OAuth2Strategy,
     // use these options for local
-    // options: {
-    // 	clientID: '644286053156-msgp3vjjr9e12av8n25tn38k7544irde.apps.googleusercontent.com',
-    // 	clientSecret: 'p6nHpYa8Af0aS4O3t_hjQ-3L'
-    // }
     options: {
-      clientID: '690869241337-l7h6pssbqcqkjkoienssc5ac2ou6qs0b.apps.googleusercontent.com',
-      clientSecret: '-Tz7UPKr_nH7Xj8dZ6gxh1cF'
+    	clientID: '644286053156-msgp3vjjr9e12av8n25tn38k7544irde.apps.googleusercontent.com',
+    	clientSecret: 'p6nHpYa8Af0aS4O3t_hjQ-3L'
     }
   }
 };
