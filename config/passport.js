@@ -22,7 +22,8 @@ module.exports.passport = {
     // use these options for local
     options: {
     	clientID: '644286053156-msgp3vjjr9e12av8n25tn38k7544irde.apps.googleusercontent.com',
-    	clientSecret: 'p6nHpYa8Af0aS4O3t_hjQ-3L'
+    	clientSecret: 'p6nHpYa8Af0aS4O3t_hjQ-3L',
+	callbackURL: '/auth/google/callback'
     }
   }
 };
