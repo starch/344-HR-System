@@ -1,0 +1,15 @@
+<%- partial ('../navbar.ejs') %>
+
+<div class="container">
+    <div class="row">    
+        <div class="col-sm-6 col-md-offset-1 col-md-10">
+            <form action="<%= submitTarget %>" method="<%= submitMethod %>">
+                <h3><%= apiName %></h3>
+                <% for (var i = 0; i < fields.length; i++) { %>
+                <%= fields[i] %>: <input type="text" name="<%= fields[i] %>"><br>
+                <% } %>
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</div>

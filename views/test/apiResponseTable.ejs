@@ -1,0 +1,27 @@
+<%- partial ('../navbar.ejs') %>
+
+<div class="container">
+    <div class="row">    
+        <div class="col-sm-6 col-md-offset-1 col-md-10">
+		    <h3><%= apiName %></h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <% for(var i = 0; i < columns.length; i++) { %>
+                        <th><%= columns[i].displayName %></th>
+                    <% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                <% for (var i = 0; i < rows.length; i++) { %>
+                    <tr>
+                    <% for (var j = 0; j < columns.length; j++) { %>
+                        <td><%= rows[i][columns[j].jsonName] %></td>
+                    <% } %>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

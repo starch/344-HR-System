@@ -52,13 +52,20 @@ module.exports.routes = {
   'get /auth/google': 'AuthController.authenticate',
   'get /auth/google/callback': 'AuthController.authcallback',
 
-  'get /profile': { controller: 'ProfileController', action: 'myProfile' },
-  'get /profile/edit': { controller: 'ProfileController', action: 'edit' },
-
-  'get /admin': { controller: 'AdminController', action: 'index' },
-  'get /admin/students': 'AdminController.students',
-  'get /admin/testGetUserById' : 'AdminController.testGetUserById',
-  'get /admin/testGetUserByEmail' : 'AdminController.testGetUserByEmail',
-
+  'get /profile': 'ProfileController.myProfile',
+  'get /profile/edit': 'ProfileController.edit',
   'post /profile/save': 'ProfileController.save',
+
+  'get /admin': 'AdminController.index',
+  'get /admin/students': 'AdminController.students',
+
+  'get /test/getAllUsers' : 'TestController.getAllUsers',
+  'get /test/getUserById' : 'TestController.getUserByIdForm',
+  'post /test/getUserById' : 'TestController.getUserByIdSubmit',
+  'get /test/getUserByEmail' : 'TestController.getUserByEmailForm',
+  'post /test/getUserByEmail' : 'TestController.getUserByEmailSubmit',
+  'get /test/createUser' : 'TestController.createUserForm',
+  'post /test/createUser' : 'TestController.createUserSubmit',
+  'get /test/updateUser' : 'TestController.updateUserForm',
+  'post /test/updateUser' : 'TestController.updateUserSubmit',
 };
