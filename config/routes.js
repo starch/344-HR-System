@@ -52,21 +52,13 @@ module.exports.routes = {
   'get /auth/google': 'AuthController.authenticate',
   'get /auth/google/callback': 'AuthController.authcallback',
 
-  'get /profile': {
-    controller: 'ProfileController',
-    action: 'myProfile'
-  },
-  'get /profile/edit': {
-    controller: 'ProfileController',
-    action: 'edit'
-  },
+  'get /profile': { controller: 'ProfileController', action: 'myProfile' },
+  'get /profile/edit': { controller: 'ProfileController', action: 'edit' },
 
-  'get /admin': {
-    controller: 'AdminController',
-    action: 'index'
-  },
-
+  'get /admin': { controller: 'AdminController', action: 'index' },
   'get /admin/students': 'AdminController.students',
+  'get /admin/testGetUserById' : 'AdminController.testGetUserById',
+  'get /admin/testGetUserByEmail' : 'AdminController.testGetUserByEmail',
 
   'post /profile/save': 'ProfileController.save',
 };

@@ -23,6 +23,7 @@
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "rc": "1.0.1",
+    "request": "^2.75.0",
     "sails": "~0.12.7",
     "sails-disk": "~0.10.9",
     "sails-generate-auth": "^0.3.1",

@@ -83,5 +83,23 @@ module.exports = {
 		  }).end();
 		});
 	},
+
+	testGetUserById: function (req, res) {
+		CentralDatabaseService.getUserById(1, function(error, response) {
+			res.view('testGetUserById', {
+		    userInfo: response,
+				error: error
+			});
+		});
+	},
+
+	testGetUserByEmail: function (req, res) {
+		CentralDatabaseService.getUserByEmail('brian@team2.com', function(error, response) {
+			res.view('testGetUserByEmail', {
+		    userInfo: response,
+				error: error
+			});
+		});
+	}
 };
 
