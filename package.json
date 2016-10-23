@@ -31,7 +31,8 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha test/bootstrap.test.js test/integration/**/*.test.js"
   },
   "main": "app.js",
   "repository": {
@@ -39,5 +40,10 @@
     "url": "git://github.com/anonymous node/sails user/344-HR-System.git"
   },
   "author": "anonymous node/sails user",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "mocha": "^3.1.2",
+    "request": "^2.75.0",
+    "supertest": "^2.0.1"
+  }
 }
