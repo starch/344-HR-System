@@ -1,0 +1,26 @@
+<%- partial ('navbar.ejs') %>
+
+<div class="container">
+  <div class="row">    
+    <div class="col-sm-6 col-md-offset-1 col-md-10">
+		  <h3>Employees</h3>
+		  <table class="table table-striped">
+  			<thead>
+  				<tr>
+            <th>Employee</th>
+            <th>Position</th>
+  					<th>Action</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+        <% for(var i=0; i < employees.length; i++) { %>
+  				<tr>
+  					<th scope="row" style="vertical-align: middle"><img src=<%= employees[i].image %> width="150px" height="150px" alt="<%= employees[i].firstName %> <%= employees[i].lastName %>'s profile picture" class="img-thumbnail"> <p><%= employees[i].firstName %> <%= employees[i].lastName %></p></th>
+            <td style="vertical-align: middle"><%= employees[i].position %></td>
+  					<td style="vertical-align: middle"><a href="/admin/edit/<%= employees[i].id %>" class="btn btn-primary">Edit</a> <a href="/admin/terminate/<%= employees[i].id %>" class="btn btn-danger">Terminate</a></td>
+  				</tr>
+        <% } %>
+  			</tbody>
+		  </table>
+		</div>
+	</div>

@@ -64,6 +64,14 @@ module.exports = {
               user.dateOfBirth = req.body.dateOfBirth;
             }
 
+            if (req.body.address) {
+               user.address = req.param('address');
+            }
+
+            if (req.body.position) {
+               user.position = req.param('position');
+            }
+
             //finish updating user
             user.save(function(err,updatedUser){
               if(err){

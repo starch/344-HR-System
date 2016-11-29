@@ -84,6 +84,41 @@ module.exports = {
 		});
 	},
 
+	employees: function (req, res) {
+		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
+			// Get list of employees
+			User.find({type: 'standard', isTerminated: false}).exec(function (err, employees) {
+				res.view('employees', {
+		      	employees: employees,
+		      	user: user,
+		      	errors: err,
+		      });
+			}); 
+		});
+	},
+
+	terminate: function (req, res) {
+		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
+			// Get user for termination request
+			User.findOneById(req.param('id')).exec(function(err, user){
+				sails.log(user);
+				res.view('terminate',{ user: user });
+			});
+		});
+	},
+
+	terminateSave: function (req, res) {
+		User.update({id:req.param('id')},{isTerminated: true}).exec(function(err, updatedUser){
+			if (err) {
+				console.log(err);
+			} else {
+				// Saved!
+				req.flash('success', 'Employee was successfully terminated.');
+				return res.redirect('/employees');
+			}
+		});
+	},
+
 	testGetUserById: function (req, res) {
 		CentralDatabaseService.getUserById(1, function(error, response) {
 			res.view('testGetUserById', {

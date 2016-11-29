@@ -58,6 +58,11 @@ module.exports.routes = {
 
   'get /admin': 'AdminController.index',
   'get /admin/students': 'AdminController.students',
+  'get /admin/employees': 'AdminController.employees',
+
+  'get /admin/terminate/:id': 'AdminController.terminate',
+  'post /admin/terminate/:id': 'AdminController.terminateSave',
+
 
   'get /test/getAllUsers' : 'TestController.getAllUsers',
   'get /test/getUserById' : 'TestController.getUserByIdForm',

@@ -13,7 +13,8 @@ var User = {
     position  : { type: 'string', defaultsTo: 'Adjunct Professor' },
     salary    : { type: 'integer', defaultsTo: 0 },
     passports : { collection: 'Passport', via: 'user' },
-    type    : { type: 'string', defaultsTo: 'standard'}
+    type    : { type: 'string', defaultsTo: 'standard'}, // standard or admin
+    isTerminated : { type: 'boolean', defaultsTo: 0 },
   }
 };
 
