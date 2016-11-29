@@ -63,6 +63,9 @@ module.exports.routes = {
   'get /admin/terminate/:id': 'AdminController.terminate',
   'post /admin/terminate/:id': 'AdminController.terminateSave',
 
+  'get /admin/edit/:id': 'AdminController.edit',
+  'post /admin/edit/:id': 'AdminController.editSave',
+
 
   'get /test/getAllUsers' : 'TestController.getAllUsers',
   'get /test/getUserById' : 'TestController.getUserByIdForm',

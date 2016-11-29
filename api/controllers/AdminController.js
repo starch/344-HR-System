@@ -119,6 +119,64 @@ module.exports = {
 		});
 	},
 
+	edit: function (req, res) {
+		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
+			// Get user for termination request
+			User.findOneById(req.param('id')).exec(function(err, user){
+				sails.log(user);
+				res.view('adminEdit',{ user: user, errors: err });
+			});
+		});
+	},
+
+	editSave: function (req, res) {
+		User.findOne({id:req.param('id')})
+      .exec(function findOneUserCB(err, user){
+			if (!err) {
+	          if (req.body.dateOfBirth) {
+	            var userValidationRes = UserValidationService.validateUserDateOfBirth(user, req.body.dateOfBirth);
+	            //throw any validation errors found
+	            if(!userValidationRes.isValid){
+	                
+	                //return view with error message
+	                req.flash('error', userValidationRes.err);
+	                console.log(userValidationRes.err);
+	                return res.view('edit',{
+	                    actionTitle: 'Edit',
+	                    action: 'edit',
+	                    user: user,
+	                    errors: req.flash('error')
+	                });
+	            } else {
+	              user.dateOfBirth = req.body.dateOfBirth;
+	            }
+	        }
+
+            if (req.body.address) {
+               user.address = req.param('address');
+            }
+
+            if (req.body.position) {
+               user.position = req.param('position');
+            }
+
+            //finish updating user
+            user.save(function(err,updatedUser){
+              if(err){
+                console.log(err);
+              } else {
+                req.flash('success', 'Success.User.Update');
+                res.redirect('/employees');
+              }
+            });
+	          
+	        } else {
+	          console.log(err);
+	          res.status(404);
+	        }
+		});
+	},
+
 	testGetUserById: function (req, res) {
 		CentralDatabaseService.getUserById(1, function(error, response) {
 			res.view('testGetUserById', {

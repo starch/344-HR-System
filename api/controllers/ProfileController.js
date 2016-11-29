@@ -63,25 +63,25 @@ module.exports = {
             } else {
               user.dateOfBirth = req.body.dateOfBirth;
             }
-
-            if (req.body.address) {
-               user.address = req.param('address');
-            }
-
-            if (req.body.position) {
-               user.position = req.param('position');
-            }
-
-            //finish updating user
-            user.save(function(err,updatedUser){
-              if(err){
-                console.log(err);
-              } else {
-                req.flash('success', 'Success.User.Update');
-                res.redirect('/profile');
-              }
-            });
           }
+
+          if (req.body.address) {
+             user.address = req.param('address');
+          }
+
+          if (req.body.position) {
+             user.position = req.param('position');
+          }
+
+          //finish updating user
+          user.save(function(err,updatedUser){
+            if(err){
+              console.log(err);
+            } else {
+              req.flash('success', 'Success.User.Update');
+              res.redirect('/profile');
+            }
+          });
           
         } else {
           console.log(err);
