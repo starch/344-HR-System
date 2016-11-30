@@ -55,6 +55,8 @@ module.exports.routes = {
   'get /profile': 'ProfileController.myProfile',
   'get /profile/edit': 'ProfileController.edit',
   'post /profile/save': 'ProfileController.save',
+  'get /profile/create': 'ProfileController.createUser',
+  'post /profile/create': 'ProfileController.createUserSubmit',
 
   'get /admin': 'AdminController.index',
   'get /admin/students': 'AdminController.students',

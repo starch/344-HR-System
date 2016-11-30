@@ -4,16 +4,13 @@
 	<div class="row">
   	<div class="col-sm-6 col-md-4">
       <a href="/profile/edit" class="btn btn-default" role="button">Edit</a>
-      <% if (user.type != 'admin') { %>
-        <a href="/admin/makeAdmin" class="btn btn-default" role="button">Make Admin</a>
-      <% } %>
   		<div class="caption">
         <h3><%= user.firstName %> <%= user.lastName %></h3>
       </div>
 			<img src=<%= user.image %> alt="<%= user.firstName %> <%= user.lastName %>'s profile picture" class="img-thumbnail">
 		</div>
 		<div class="col-sm-6 col-md-8">
-		  <h3>Employee Information</h3>
+		  <h3><%= user.type %> Information</h3>
 		  <table class="table table-striped">
   			<thead>
   				<tr>

@@ -28,6 +28,27 @@ module.exports = {
       });
 	},
 
+	makeAdmin: function (req, res) {
+		User.findOne({id:req.session.passport.user})
+      .exec(function findOneUserCB(err, user){
+        if (!err) {
+        	user.type = 'Student';
+            //finish updating event
+            user.save(function(err,updatedUser){
+              if(err){
+                console.log(err);
+              } else {
+                req.flash('success', 'Success.User.Update');
+                res.redirect('/');
+              }
+            });
+        } else {
+          console.log(err);
+          res.status(404);
+        }
+      });
+	},
+
 	index: function (req, res) {
 		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
       	if (!err) {
@@ -87,7 +108,7 @@ module.exports = {
 	employees: function (req, res) {
 		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
 			// Get list of employees
-			User.find({type: 'standard', isTerminated: false}).exec(function (err, employees) {
+			User.find({type: 'employee', isTerminated: false}).exec(function (err, employees) {
 				res.view('employees', {
 		      	employees: employees,
 		      	user: user,
@@ -113,8 +134,10 @@ module.exports = {
 				console.log(err);
 			} else {
 				// Saved!
+
+				// TODO: Send request to api to update terminated bool
 				req.flash('success', 'Employee was successfully terminated.');
-				return res.redirect('/employees');
+				return res.redirect('/admin/employees');
 			}
 		});
 	},

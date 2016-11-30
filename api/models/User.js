@@ -11,10 +11,11 @@ var User = {
     address   : { type: 'string', defaultsTo: '' },
     image     : { type: 'string' },
     position  : { type: 'string', defaultsTo: 'Adjunct Professor' },
-    salary    : { type: 'integer', defaultsTo: 0 },
+    salary    : { type: 'integer', defaultsTo: 42000 },
     passports : { collection: 'Passport', via: 'user' },
-    type    : { type: 'string', defaultsTo: 'standard'}, // standard or admin
+    type    : { type: 'string', defaultsTo: 'Employee'}, // Employee or Student or admin
     isTerminated : { type: 'boolean', defaultsTo: 0 },
+    isLinked : { type: 'boolean', defaultsTo: 0 },
   }
 };
 

@@ -13,10 +13,15 @@ module.exports = {
   myProfile: function (req, res) {
     User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
       if (!err) {
-        res.view('profile', {
-          // Assign variables here
-          user: user
-        });
+        // If the account is not linked redirect to the linking page
+        if (!user.isLinked) {
+          res.redirect('/profile/create');
+        } else {
+          res.view('profile', {
+            // Assign variables here
+            user: user
+          });
+        }
       } else {
         res.status(404);
       }
@@ -89,6 +94,55 @@ module.exports = {
         }
       });
   },
+
+  createUser: function(req, res) {
+        res.view('createUser', {
+            apiName: 'createUser',
+            fields: ['email'],
+            submitTarget: req.path,
+            submitMethod: 'post'
+        });
+    },
+
+    createUserSubmit: function(req, res) {
+        var firstname = req.param('firstname');
+        var lastname = req.param('lastname');
+        var type = req.param('type');
+        var email = req.param('email');
+        var authtoken = req.param('authtoken');
+        var id = req.param('id');
+
+        CentralDatabaseService.createUser(email, type, firstname, lastname, authtoken, function(error, response) {
+            if (error)
+            {
+                res.send('error');
+                res.end();
+            }
+            else
+            {
+              User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
+                user.isLinked = 1;
+                user.type = req.param('type');
+                if (user.type == 'Student') {
+                  user.position = 'Student';
+                  user.salary = 0;
+                } else if (user.type == 'admin') {
+                  user.position = 'Administrator';
+                  user.salary = 100000;
+                }
+
+                user.save(function(err,updatedUser){
+                  if(err){
+                    console.log(err);
+                  } else {
+                    req.flash('success', 'Success.User.Update');
+                    res.redirect('/profile');
+                  }
+                });
+              });
+            }
+        });
+    },
 
 };
 
