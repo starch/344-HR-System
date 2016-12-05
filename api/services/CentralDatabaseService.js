@@ -45,8 +45,12 @@ module.exports = {
         callApi('GET', 'User.php', 'get_user_by_email', { email: email }, callback );
     },
 
-    createUser: function(email, type, firstname, lastname, authtoken, callback) {
-        callApi('POST', 'User.php', 'create_user', { email: email, type: type, firstname: firstname, lastname: lastname, authtoken: authtoken }, callback);
+    getUserByGoogleId: function(googleid, callback) {
+        callApi('GET', 'User.php', 'get_user_by_googleid', { googleid: googleid }, callback );
+    },
+
+    createUser: function(email, type, firstname, lastname, authtoken, googleid, callback) {
+        callApi('POST', 'User.php', 'create_user', { email: email, type: type, firstname: firstname, lastname: lastname, authtoken: authtoken, googleid: googleid }, callback);
     },
 
     updateUser: function(id, optionalParams, callback) {
@@ -56,5 +60,9 @@ module.exports = {
         }
 
         callApi('POST', 'User.php', 'update_user', params, callback);
+    },
+
+    setUserInactive: function(id, callback) {
+        callApi('POST', 'User.php', 'set_user_inactive', params, callback);
     }
 }
