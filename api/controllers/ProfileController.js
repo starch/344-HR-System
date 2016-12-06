@@ -126,15 +126,22 @@ module.exports = {
                 if (user.type == 'Student') {
                   user.position = 'Student';
                   user.salary = 0;
+                } else if (user.type == 'Employee') {
+                  user.position = 'Adjunct Professor';
+                  user.salary = 43990;
                 } else if (user.type == 'admin') {
                   user.position = 'Administrator';
-                  user.salary = 100000;
+                  user.salary = 53990;
+                } else if (user.type == 'Network Administrator') {
+                  user.position = 'Network Administrator';
+                  user.salary = 93460;
                 }
 
                 user.save(function(err,updatedUser){
                   if(err){
                     console.log(err);
                   } else {
+                    // TODO: Call CentralDBService and create user
                     req.flash('success', 'Success.User.Update');
                     res.redirect('/profile');
                   }

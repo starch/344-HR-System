@@ -146,7 +146,6 @@ module.exports = {
 		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
 			// Get user for termination request
 			User.findOneById(req.param('id')).exec(function(err, user){
-				sails.log(user);
 				res.view('adminEdit',{ user: user, errors: err });
 			});
 		});
@@ -179,25 +178,76 @@ module.exports = {
                user.address = req.param('address');
             }
 
-            if (req.body.position) {
+            if (req.body.position != user.position) {
                user.position = req.param('position');
-            }
 
-            //finish updating user
-            user.save(function(err,updatedUser){
-              if(err){
-                console.log(err);
-              } else {
-                req.flash('success', 'Success.User.Update');
-                res.redirect('/employees');
-              }
-            });
-	          
+               var positionStr = '';
+
+               switch(user.position) {
+               	case 'Professor':
+               	positionStr = 'OEUM001018000000025108104';
+               	break;
+               	case 'Adjunct Professor':
+               	positionStr = 'OEUM001018000000025000004';
+               	break;
+               	case 'Administrator':
+               	positionStr = 'OEUM001018000000011903304'; 
+               	break;
+               	case 'Network Administrator':
+               	positionStr = 'OEUM001018000000011302104';
+               	break;
+               	default:
+               	positionStr = '';
+               }
+
+               SalaryService.getSalary(positionStr, function(error, salary) {
+               		sails.log("Service call " + salary);
+		            if (salary != -1) {
+		    			user.salary = salary;
+		    		}
+
+		    		// Update with new salary
+		            user.save(function(err,updatedUser){
+		              if(err){
+		                console.log(err);
+		              } else {
+
+		              	// TODO: Use CentralDBService to update user
+
+		                req.flash('success', 'Success.User.Update');
+		                res.redirect('/admin/employees');
+		              }
+		            });
+               });
+               
+            } else {
+
+            	// Update user with the same salary
+		        user.save(function(err,updatedUser){
+		          if(err){
+		            console.log(err);
+		          } else {
+
+		          	// TODO: Use CentralDBService to update user
+
+		            req.flash('success', 'Success.User.Update');
+		            res.redirect('/admin/employees');
+		          }
+		        });
+
+		   	}
+
 	        } else {
 	          console.log(err);
 	          res.status(404);
 	        }
 		});
+	},
+
+	getSalary: function (req, res) {
+		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
+
+	});
 	},
 
 	testGetUserById: function (req, res) {

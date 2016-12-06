@@ -19,11 +19,16 @@
 		  <form action="/admin/edit/<%= user.id %>" method="post">
         <div class="form-group">
           <label for="txtTitle">Title: </label>
-          <input type="text" class="form-control" id="txtTitle" name="position" value="<%= user.position %>">
+          <select class="form-control" id="txtTitle" name="position">
+            <option value="Adjunct Professor" <% if (user.position == "Adjunct Professor") {%> selected <% } %>>Adjunct Professor</option>
+            <option value="Professor" <% if (user.position == "Professor") {%> selected <% } %>>Professor</option>
+            <option value="Administrator" <% if (user.position == "Administrator") {%> selected <% } %>>Administrator</option>
+            <option value="Network Administrator" <% if (user.position == "Network Administrator") {%> selected <% } %>>Network Administrator</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="txtSalary">Salary: </label>
-          <input type="number" class="form-control" id="nmbSalary" name="salary" value="<%= user.salary %>">
+          <div class="form-control" id="nmbSalary" name="salary">$<%= user.salary %></div>
         </div>
         <div class="form-group">
           <label for="txtAddress">Address: </label>
