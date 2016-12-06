@@ -71,7 +71,6 @@ module.exports = {
 		      port: 80,
 		      path: '/api/User.php?action=get_all_users',
 		      method: 'GET',
-		      //headers: {'Authorization': 'Basic ' + 'SuperSecretLoginAndPassword'}
 		    };
 
 			http.request(options, function(response) {
@@ -122,7 +121,6 @@ module.exports = {
 		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
 			// Get user for termination request
 			User.findOneById(req.param('id')).exec(function(err, user){
-				sails.log(user);
 				res.view('terminate',{ user: user });
 			});
 		});
@@ -135,9 +133,43 @@ module.exports = {
 			} else {
 				// Saved!
 
-				// TODO: Send request to api to update terminated bool
+				// Set isActive bool to 0 in central db
+				CentralDatabaseService.getUserByGoogleId(updatedUser[0].userId, function(error, response) {
+					CentralDatabaseService.setUserInactive(response[0]['UserID'], function(error, user) {
+					});
+				});
+
 				req.flash('success', 'Employee was successfully terminated.');
 				return res.redirect('/admin/employees');
+			}
+		});
+	},
+
+	terminateStudent: function (req, res) {
+		User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
+			// Get user for termination request
+			User.findOne({userId: req.param('id')}).exec(function(err, student){
+				sails.log(student);
+				res.view('expell',{ user: student });
+			});
+		});
+	},
+
+	terminateStudentSave: function (req, res) {
+		User.update({userId:req.param('id')},{isTerminated: true}).exec(function(err, updatedUser){
+			if (err) {
+				console.log(err);
+			} else {
+				// Saved!
+
+				// Set isActive bool to 0 in central db
+				CentralDatabaseService.getUserByGoogleId(updatedUser[0].userId, function(error, response) {
+					CentralDatabaseService.setUserInactive(response[0]['UserID'], function(error, user) {
+					});
+				});
+
+				req.flash('success', 'Student was successfully expelled.');
+				return res.redirect('/admin/students');
 			}
 		});
 	},

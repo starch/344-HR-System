@@ -1,0 +1,36 @@
+<%- partial ('navbar.ejs') %>
+
+<div class="container">
+	<div class="row">
+	  	<div class="col-sm-6 col-md-4">
+	  		<div class="caption">
+	        <h3><%= user.firstName %> <%= user.lastName %></h3>
+	      </div>
+				<img src=<%= user.image %> alt="<%= user.firstName %> <%= user.lastName %>'s profile picture" class="img-thumbnail">
+			</div>
+			<div class="col-sm-6 col-md-8">
+			  <h3>Expell Student <%= user.firstName %> <%= user.lastName %>?</h3>
+			  <form method="post">
+				  <table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Address</th>
+								<th>Date of Birth</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><%= user.address %></td>
+								<td><%= user.dateOfBirth %></td>
+							</tr>
+						</tbody>
+				  </table>
+				</div>
+			    <div class="form-group">
+			      <input type="submit" class="btn btn-danger" text="Expell">
+			      <a href="/admin/students" class="btn btn-default">Cancel</a>
+			    </div>
+	      	</form>
+		</div>
+	</div>
+</div>

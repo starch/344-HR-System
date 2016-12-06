@@ -14,11 +14,11 @@
   			</thead>
   			<tbody>
         <% for(var i=0; i < responseData.length; i++) { %>
-          <% if (responseData[i].Type == "student") { %>
+          <% if (responseData[i].Type == "Student" && responseData[i].GoogleID != null && responseData[i].IsActive == 1) { %>
     				<tr>
     					<th scope="row"><%= responseData[i].Firstname %> <%= responseData[i].Lastname %></th>
               <td><%= responseData[i].Email %></td>
-    					<td><a href="#" class="btn btn-danger">Terminate</a></td>
+    					<td><a href="/admin/expell/<%= responseData[i].GoogleID %>" class="btn btn-danger">Expell</a></td>
     				</tr>
           <% } %>
         <% } %>

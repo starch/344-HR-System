@@ -23,10 +23,12 @@ function callApi(method, relPath, action, parameters, callback) {
             callback(error, null);
         } else {
             try {
-                callback(null, JSON.parse(body));
+                var parsed = JSON.parse(body)
+                
             } catch(e) {
                 callback(e, null);
             }
+            callback(null, parsed);
         }
     });
 }
@@ -63,6 +65,8 @@ module.exports = {
     },
 
     setUserInactive: function(id, callback) {
+        var params = { id: id };
+
         callApi('POST', 'User.php', 'set_user_inactive', params, callback);
     }
 }
