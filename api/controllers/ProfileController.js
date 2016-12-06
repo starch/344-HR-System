@@ -109,47 +109,55 @@ module.exports = {
         var lastname = req.param('lastname');
         var type = req.param('type');
         var email = req.param('email');
-        var authtoken = req.param('authtoken');
         var id = req.param('id');
 
-        CentralDatabaseService.createUser(email, type, firstname, lastname, authtoken, function(error, response) {
-            if (error)
-            {
-                res.send('error');
-                res.end();
-            }
-            else
-            {
-              User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
-                user.isLinked = 1;
-                user.type = req.param('type');
-                if (user.type == 'Student') {
-                  user.position = 'Student';
-                  user.salary = 0;
-                } else if (user.type == 'Employee') {
-                  user.position = 'Adjunct Professor';
-                  user.salary = 43990;
-                } else if (user.type == 'admin') {
-                  user.position = 'Administrator';
-                  user.salary = 53990;
-                } else if (user.type == 'Network Administrator') {
-                  user.position = 'Network Administrator';
-                  user.salary = 93460;
-                }
+        User.findOne({id:req.session.passport.user}).exec(function (err, user) {
+            var googleid = user.userId.toString();
+            var authtoken = "123";
 
-                user.save(function(err,updatedUser){
-                  if(err){
-                    console.log(err);
-                  } else {
-                    // TODO: Call CentralDBService and create user
-                    req.flash('success', 'Success.User.Update');
-                    res.redirect('/profile');
-                  }
-                });
-              });
-            }
+            console.log("calling createUser:\n    email: " + email + "\n    firstname: " + firstname +
+              "\n    lastname: " + lastname + "\n    authtoken: " + authtoken + "\n    googleid: " + googleid);
+
+            CentralDatabaseService.createUser(email, type, firstname, lastname, authtoken, googleid, function(error, response) {
+                
+                console.log("createUser response: " + JSON.stringify(response));
+                
+                if (error)
+                {
+                    res.send('error');
+                    res.end();
+                }
+                else
+                {
+                  User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
+                    user.isLinked = 1;
+                    user.type = req.param('type');
+                    if (user.type == 'Student') {
+                      user.position = 'Student';
+                      user.salary = 0;
+                    } else if (user.type == 'Employee') {
+                      user.position = 'Adjunct Professor';
+                      user.salary = 43990;
+                    } else if (user.type == 'admin') {
+                      user.position = 'Administrator';
+                      user.salary = 53990;
+                    } else if (user.type == 'Network Administrator') {
+                      user.position = 'Network Administrator';
+                      user.salary = 93460;
+                    }
+
+                    user.save(function(err,updatedUser){
+                      if(err){
+                        console.log(err);
+                      } else {
+                        req.flash('success', 'Success.User.Update');
+                        res.redirect('/profile');
+                      }
+                    });
+                  });
+                }
+            });
         });
     },
 
 };
-
