@@ -13,8 +13,12 @@ module.exports = {
   myProfile: function (req, res) {
     User.findOne({id:req.session.passport.user}).exec(function findOneUserCB(err, user){
       if (!err) {
-        // If the account is not linked redirect to the linking page
-        if (!user.isLinked) {
+        if (user.isTerminated) {
+          req.logout();
+          req.session.authenticated = false;
+          res.redirect('/');
+        } else if (!user.isLinked) {
+          // If the account is not linked redirect to the linking page
           res.redirect('/profile/create');
         } else {
           res.view('profile', {
