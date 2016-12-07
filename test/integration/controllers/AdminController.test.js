@@ -29,6 +29,13 @@ describe('Central API Get Users by email', function() {
 	});
 });
 
+describe('Central API Get User by GoogleID', function() {
+	it('Can get an existing user from the central API by GoogleID', function(done) {
+		api.get('/api/User.php?action=get_user_by_googleid&googleid=115888752851898930000')
+			.expect(200, done);
+	});
+});
+
 // Post Tests
 // describe('Cemtral API Update', function() {
 // 	it('Can update an existing user on the central API', function(done) {
